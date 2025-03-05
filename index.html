@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPlatform - Interactive Learning</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-enhanced.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.js"></script>
+</head>
+<body>
+    <div class="intro-screen">
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-icon">📚</div>
+                <div class="logo-title">EduPlatform</div>
+                <div class="logo-tagline">Interactive Learning Made Fun</div>
+            </div>
+        </div>
+        <div class="intro-content">
+            <h1>Welcome to EduPlatform</h1>
+            <p>Your comprehensive learning companion for interactive education</p>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Interactive Quizzes</h3>
+                    <p>Test your knowledge with dynamic quizzes across various subjects</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔢</div>
+                    <h3>Math Solver</h3>
+                    <p>Step-by-step solutions to complex mathematical problems</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Vocabulary Builder</h3>
+                    <p>Expand your vocabulary with interactive word learning</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💻</div>
+                    <h3>Code Practice</h3>
+                    <p>Learn programming with our interactive code editor</p>
+                </div>
+            </div>
+            <button class="start-button" onclick="startApp()">Get Started</button>
+        </div>
+    </div>
+
+    <nav class="navbar" style="display: none;">
+        <div class="logo">EduPlatform</div>
+        <ul class="nav-links">
+            <li><a href="#quiz">Quiz Builder</a></li>
+            <li><a href="#math">Math Solver</a></li>
+            <li><a href="#vocabulary">Vocabulary</a></li>
+            <li><a href="#programming">Programming</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="quiz" class="app-section">
+            <h2>Interactive Quiz Generator</h2>
+            <div class="app-container">
+                <div class="quiz-generator">
+                    <div class="subject-selector">
+                        <h3>Select Subject</h3>
+                        <div class="subject-grid">
+                            <div class="subject-card" onclick="quizGenerator.setSubject('english')">
+                                <div class="subject-icon">📚</div>
+                                <span>English</span>
+                            </div>
+                            <div class="subject-card" onclick="quizGenerator.setSubject('math')">
+                                <div class="subject-icon">🔢</div>
+                                <span>Mathematics</span>
+                            </div>
+                            <div class="subject-card" onclick="quizGenerator.setSubject('science')">
+                                <div class="subject-icon">🔬</div>
+                                <span>Science</span>
+                            </div>
+                            <div class="subject-card" onclick="quizGenerator.setSubject('geography')">
+                                <div class="subject-icon">🌍</div>
+                                <span>Geography</span>
+                            </div>
+                            <div class="subject-card" onclick="quizGenerator.setSubject('history')">
+                                <div class="subject-icon">📜</div>
+                                <span>History</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="quiz-options">
+                        <h3>Quiz Options</h3>
+                        <div class="options-grid">
+                            <div class="option-card">
+                                <h4>Difficulty</h4>
+                                <select id="difficultySelect">
+                                    <option value="easy">Easy</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="hard">Hard</option>
+                                </select>
+                            </div>
+                            <div class="option-card">
+                                <h4>Questions</h4>
+                                <select id="questionCount">
+                                    <option value="5">5 Questions</option>
+                                    <option value="10">10 Questions</option>
+                                    <option value="15">15 Questions</option>
+                                </select>
+                            </div>
+                            <div class="option-card">
+                                <h4>Category</h4>
+                                <select id="categorySelect">
+                                    <option value="general">General</option>
+                                    <option value="specific">Specific Topic</option>
+                                    <option value="mixed">Mixed Topics</option>
+                                </select>
+                            </div>
+                            <div class="option-card">
+                                <h4>Time Limit</h4>
+                                <select id="timeLimit">
+                                    <option value="0">No Limit</option>
+                                    <option value="30">30 seconds per question</option>
+                                    <option value="60">1 minute per question</option>
+                                    <option value="120">2 minutes per question</option>
+                                </select>
+                            </div>
+                            <div class="option-card">
+                                <h4>Hints</h4>
+                                <select id="hintsEnabled">
+                                    <option value="true">Enabled</option>
+                                    <option value="false">Disabled</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="generateQuiz" class="btn-primary">Generate Quiz</button>
+                </div>
+                <div class="quiz-container" style="display: none;">
+                    <div class="quiz-header">
+                        <div class="quiz-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill"></div>
+                            </div>
+                            <span class="progress-text">Question 1 of 10</span>
+                        </div>
+                        <div class="quiz-info">
+                            <div class="timer-container">
+                                <span class="timer-icon">⏱️</span>
+                                <span class="timer">00:00</span>
+                            </div>
+                            <div class="hints-container">
+                                <span class="hints-icon">💡</span>
+                                <span class="hints-count">3</span>
+                            </div>
+                            <div class="quiz-score">
+                                <span class="score">Score: 0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question-container">
+                        <h3 class="question-text"></h3>
+                        <div class="hint-container" style="display: none;">
+                            <button class="hint-button">Show Hint</button>
+                            <div class="hint-text"></div>
+                        </div>
+                        <div class="options-container"></div>
+                    </div>
+                    <div class="quiz-controls">
+                        <button id="nextQuestion" class="btn-primary" style="display: none;">Next Question</button>
+                        <button id="submitQuiz" class="btn-primary" style="display: none;">Submit Quiz</button>
+                    </div>
+                </div>
+                <div class="quiz-review" style="display: none;">
+                    <h3>Quiz Review</h3>
+                    <div class="review-summary">
+                        <div class="summary-card">
+                            <h4>Final Score</h4>
+                            <div class="final-score">0%</div>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Time Taken</h4>
+                            <div class="time-taken">00:00</div>
+                        </div>
+                        <div class="summary-card">
+                            <h4>Questions Correct</h4>
+                            <div class="correct-answers">0/0</div>
+                        </div>
+                    </div>
+                    <div class="review-questions"></div>
+                    <div class="review-controls">
+                        <button id="retryQuiz" class="btn-primary">Try Again</button>
+                        <button id="newQuiz" class="btn-primary">New Quiz</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="math" class="app-section">
+            <h2>Math Problem Solver</h2>
+            <div class="app-container">
+                <div class="math-input">
+                    <div class="equation-editor">
+                        <div class="equation-toolbar">
+                            <button class="equation-button" onclick="mathSolver.insertSymbol('x')">x</button>
+                            <button class="equation-button" onclick="mathSolver.insertSymbol('y')">y</button>
+                            <button class="equation-button" onclick="mathSolver.insertSymbol('^')">^</button>
+                            <button class="equation-button" onclick="mathSolver.insertSymbol('sqrt')">√</button>
+                            <button class="equation-button" onclick="mathSolver.insertSymbol('pi')">π</button>
+                        </div>
+                        <textarea id="mathProblem" placeholder="Enter your math problem..."></textarea>
+                        <button id="solveMath" class="btn-primary">Solve</button>
+                    </div>
+                    <div class="quick-examples">
+                        <h4>Quick Examples</h4>
+                        <div class="example-buttons">
+                            <button onclick="mathSolver.loadExample('2 + 2')">Basic</button>
+                            <button onclick="mathSolver.loadExample('x^2 + 2x + 1')">Algebra</button>
+                            <button onclick="mathSolver.loadExample('sqrt(16)')">Square Root</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="math-solution">
+                    <div id="mathResult"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="vocabulary" class="app-section">
+            <h2>Enhanced Vocabulary Builder</h2>
+            <div class="app-container">
+                <div class="vocab-exercise">
+                    <div class="learning-mode">
+                        <button class="mode-button active" onclick="vocabularyBuilder.setMode('daily')">Daily Words</button>
+                        <button class="mode-button" onclick="vocabularyBuilder.setMode('category')">Categories</button>
+                        <button class="mode-button" onclick="vocabularyBuilder.setMode('difficulty')">Difficulty</button>
+                    </div>
+                    <div class="vocab-categories">
+                        <div class="category-card" onclick="vocabularyBuilder.setCategory('academic')">
+                            <h4>Academic</h4>
+                            <p>Words commonly used in academic writing</p>
+                        </div>
+                        <div class="category-card" onclick="vocabularyBuilder.setCategory('business')">
+                            <h4>Business</h4>
+                            <p>Professional and business vocabulary</p>
+                        </div>
+                        <div class="category-card" onclick="vocabularyBuilder.setCategory('technical')">
+                            <h4>Technical</h4>
+                            <p>Scientific and technical terms</p>
+                        </div>
+                        <div class="category-card" onclick="vocabularyBuilder.setCategory('literary')">
+                            <h4>Literary</h4>
+                            <p>Words from literature and poetry</p>
+                        </div>
+                    </div>
+                    <div id="wordDisplay" class="word-card">
+                        <div class="word-content">
+                            <div class="word">Loading...</div>
+                            <div class="definition" style="display: none"></div>
+                        </div>
+                    </div>
+                    <div class="word-controls">
+                        <button id="nextWord" class="btn-primary">Next Word</button>
+                        <button id="showDefinition" class="btn-secondary">Show Definition</button>
+                    </div>
+                </div>
+                <div class="vocab-tools">
+                    <div class="search-box">
+                        <h3>Word Search</h3>
+                        <div class="search-container">
+                            <input type="text" id="wordSearch" placeholder="Search for any word...">
+                            <button id="searchButton" class="btn-primary">Search</button>
+                        </div>
+                        <div id="searchResult" class="search-result"></div>
+                    </div>
+                    <div class="vocab-progress">
+                        <h3>Your Progress</h3>
+                        <div id="progressStats" class="progress-card">
+                            <div class="progress-details">
+                                <div class="progress-stat">
+                                    <h5>Words Learned</h5>
+                                    <p id="wordsLearned">0</p>
+                                </div>
+                                <div class="progress-stat">
+                                    <h5>Categories</h5>
+                                    <p id="categoriesCompleted">0</p>
+                                </div>
+                                <div class="progress-stat">
+                                    <h5>Streak</h5>
+                                    <p id="learningStreak">0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="programming" class="app-section">
+            <h2>Programming Practice</h2>
+            <div class="app-container">
+                <div class="code-editor">
+                    <div class="editor-header">
+                        <select id="languageSelect">
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="javascript">JavaScript</option>
+                        </select>
+                    </div>
+                    <textarea id="codeEditor" placeholder="Write your code here..."></textarea>
+                </div>
+                <div class="code-output">
+                    <h3>Output</h3>
+                    <div id="outputDisplay"></div>
+                    <button id="runCode">Run Code</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html> 
